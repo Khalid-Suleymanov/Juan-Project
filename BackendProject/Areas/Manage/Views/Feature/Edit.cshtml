@@ -1,0 +1,43 @@
+﻿@model Feature
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1>Feature Edit</h1>
+        </div>
+        <div class="col-md-8">
+            <form method="post" asp-action="edit" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for="Title" class="form-control">
+                    <span class="text-danger" asp-validation-for="Title"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Desc">Description</label>
+                    <input asp-for="Desc" class="form-control">
+                    <span class="text-danger" asp-validation-for="Desc"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Icon">Icon</label>
+                    <input asp-for="Icon" class="form-control">
+                    <span class="text-danger" asp-validation-for="Icon"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BackgroundColor">BackgroundColor</label>
+                    <input asp-for="BackgroundColor" class="form-control">
+                    <span class="text-danger" asp-validation-for="BackgroundColor"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@*
+@section Scripts{
+    @Html.Partial("_ValidationScriptsPartial")
+}*@
+

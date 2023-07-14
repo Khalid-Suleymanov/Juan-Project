@@ -1,0 +1,321 @@
+﻿@using BackendProject.Enums
+@model ShopViewModel
+<main>
+    <!-- breadcrumb area start -->
+    <div class="breadcrumb-area bg-img" data-bg="/Manage/Assets/img/Background-color-shop.png">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap text-center">
+                        <nav aria-label="breadcrumb">
+                            <h1 class="breadcrumb-title">shop</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+    <!-- page main wrapper start -->
+    <div class="shop-main-wrapper section-padding">
+        <div class="container">
+            <div class="row">
+                <!-- sidebar area start -->
+                <div class="col-lg-3 order-2 order-lg-1">
+                    <div class="sidebar-wrapper">
+                        <!-- single sidebar start -->
+                        <div class="sidebar-single">
+                            <div class="sidebar-title">
+                                <h3>Category</h3>
+                            </div>
+                            <div class="sidebar-body">
+                                <ul class="color-list">
+                                    @foreach (var item in Model.Categories)
+                                    {
+                                        <li>
+                                            <div class="form-check">
+                                                <input class="form-check-input" form="filterForm" name="categoryId" type="checkbox" value="@item.Id" id="categories-@item.Id" @(Model.SelectedCategoryIds.Contains(item.Id)? "checked":"")>
+                                                <label class="form-check-label" for="categories-@item.Id">
+                                                    @item.Name (@item.Products.Count)
+                                                </label>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sidebar-single">
+                            <div class="sidebar-title">
+                                <h3>Brand</h3>
+                            </div>
+                            <div class="sidebar-body">
+                                <ul class="size-list">
+                                    @foreach (var item in Model.Brands)
+                                    {
+                                        <li>
+                                            <div class="form-check">
+                                                <input class="form-check-input" form="filterForm" name="brandId" type="checkbox" value="@item.Id" id="brands-@item.Id" @(Model.SelectedBrandIds.Contains(item.Id)? "checked":"")>
+                                                <label class="form-check-label" for="brands-@item.Id">
+                                                    @item.Name (@item.Products.Count)
+                                                </label>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sidebar-single">
+                            <div class="sidebar-title">
+                                <h3>Size</h3>
+                            </div>
+                            <div class="sidebar-body">
+                                <ul class="size-list">
+                                    @foreach (var item in Model.Sizes)
+                                    {
+                                    <li>
+                                    <div class="form-check">
+                                    <input class="form-check-input" form="filterForm" name="sizeId" type="checkbox" value="@item.Id" id="sizes-@item.Id" @(Model.SelectedSizeIds.Contains(item.Id)? "checked":"")>
+                                    <label class="form-check-label" for="sizes-@item.Id">
+                                      @item.Name (@item.ProductSizes.Count)
+                                    </label>
+                                    </div>
+                                    </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sidebar-single">
+                            <div class="sidebar-title">
+                                <h3>Gender</h3>
+                            </div>
+                            <div class="sidebar-body">
+                                <ul class="color-list">
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input" form="filterForm" name="status" type="radio" value="@GenderStatus.Male" id="status-@GenderStatus.Male" @(GenderStatus.Male==Model.Status? "checked":"")>
+                                            <label class="form-check-label" for="status-@GenderStatus.Male">
+                                                @GenderStatus.Male <span>(@Model.Product.Where(x=>x.Status==GenderStatus.Male).ToList().Count)</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input" form="filterForm" name="status" type="radio" value="@GenderStatus.Female" id="status-@GenderStatus.Female" @(GenderStatus.Female==Model.Status? "checked":"")>
+                                            <label class="form-check-label" for="status-@GenderStatus.Female">
+                                                @GenderStatus.Female <span>(@Model.Product.Where(x=>x.Status==GenderStatus.Female).ToList().Count)</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input" form="filterForm" name="status" type="radio" value="@GenderStatus.Other" id="status-@GenderStatus.Other" @(GenderStatus.Other==Model.Status? "checked":"")>
+                                            <label class="form-check-label" for="status-@GenderStatus.Other">
+                                                @GenderStatus.Other <span>(@Model.Product.Where(x=>x.Status==GenderStatus.Other).ToList().Count)</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- single sidebar end -->
+                        <!-- single sidebar start -->
+                        <div class="sidebar-single">
+                            <div class="sidebar-title">
+                                <h3>Filter by price</h3>
+                            </div>
+                            <div class="sidebar-body">
+                                <div class="price-range-wrap">
+                                    <div class="price-range" data-min="20" data-max="400"></div>
+                                    <div class="range-slider">
+                                        <form method="get" id="filterForm">
+                                            <div class="price-input">
+                                                <label for="amount">Price: </label>
+                                                <input type="text" id="amount">
+                                            </div>
+                                            <button class="w-100 filter-btn">filter</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- sidebar area end -->
+                <!-- shop main wrapper start -->
+                <div class="col-lg-9 order-1 order-lg-2">
+                    <div class="shop-product-wrapper">
+                        <!-- shop product top wrap start -->
+                        <div class="shop-top-bar">
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-4 col-md-3 order-2 order-md-1">
+                                    <div class="top-bar-left">
+                                        <div class="product-view-mode">
+                                            <a class="active" href="#" data-target="grid-view"><i class="fa fa-th"></i></a>
+                                            <a href="#" data-target="list-view"><i class="fa fa-list"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-7 col-lg-8 col-md-9 order-1 order-md-2">
+                                    <div class="top-bar-right">
+                                        <div class="product-short">
+                                            <p>Sort By : </p>
+                                            <select class="nice-select" name="sortby">
+                                                <option value="trending">Relevance</option>
+                                                <option value="sales">
+                                                    Name (A - Z)
+                                                </option>
+                                                <option value="sales">
+                                                    Name (Z - A)
+                                                </option>
+                                                <option value="rating">
+                                                    Price (Low &gt; High)
+                                                </option>
+                                                <option value="date">
+                                                    Price (High &gt; Low)
+                                                </option>
+                                                <option value="price-asc">
+                                                    Rating (Highest)
+                                                </option>
+                                                <option value="price-asc">
+                                                    Rating (Lowest)
+                                                </option>
+                                                <option value="price-asc">
+                                                    Model (A - Z)
+                                                </option>
+                                                <option value="price-asc">
+                                                    Model (Z - A)
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- shop product top wrap start -->
+                        <!-- product item list start -->
+                        <div class="shop-product-wrap grid-view row mbn-50">
+                            @foreach (var item in Model.AllProduct.Items)
+                            {
+                                <div class="col-lg-4 col-sm-6">
+                                    <!-- product grid item start -->
+                                    <div class="product-item mb-53">
+                                        <div class="product-thumb">
+                                            <a href="product-details.html">
+                                                <img src="~/Manage/Uploads/Products/@item.Images.FirstOrDefault(x=>x.ImageStatus==true).ImageName" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="product-content">
+                                            <h5 class="product-name">
+                                                <a href="product-details.html">@item.Name</a>
+                                            </h5>
+                                            <div class="price-box">
+                                                <span class="price-regular">$@item.SalePrice.ToString("0.##")</span>
+                                                <span class="price-old"><del>$@item.CostPrice.ToString("0.##")</del></span>
+                                            </div>
+                                            <div class="product-action-link">
+                                                <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                                <a class="basket-add-btn" asp-action="addtobasket" asp-controller="home" asp-route-id="@item.Id" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                                <a asp-action="getdetail" asp-controller="home" asp-route-id="@item.Id" class="modal-btn" title="Add to cart">
+                                                    <span data-toggle="tooltip"
+                                                      title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product grid item end -->
+                                    <!-- product list item start -->
+                                    <div class="product-list-item mb-30">
+                                        <div class="product-thumb">
+                                            <a href="product-details.html">
+                                                <img src="~/Manage/Uploads/Products/@item.Images.FirstOrDefault(x=>x.ImageStatus==true).ImageName" alt="product thumb">
+                                            </a>
+                                        </div>
+                                        <div class="product-content-list">
+                                            <h5 class="product-name">
+                                                <a href="product-details.html">@item.Name</a>
+                                            </h5>
+                                            <div class="price-box">
+                                                <span class="price-regular">$@item.SalePrice.ToString("0.##")</span>
+                                                <span class="price-old"><del>$@item.CostPrice.ToString("0.##")</del></span>
+                                            </div>
+                                            <p>
+                                                @item.Description
+                                            </p>
+                                            <div class="product-link-2 position-static">
+                                                <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                                <a class="basket-add-btn" asp-action="addtobasket" asp-controller="home" asp-route-id="@item.Id" data-toggle="tooltip" title="Add To Cart"><i class="ion-bag"></i></a>
+                                                <a href="#" data-toggle="modal" data-target="#quick_view">
+                                                    <span data-toggle="tooltip"
+                                                      title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product list item start -->
+                                </div>
+                            }
+                        </div>
+                        <!-- product item list end -->
+                        <!-- start pagination area -->
+                        <div class="paginatoin-area text-center mt-45">
+                            <ul class="pagination-box">
+                                <li><a class="Previous" href="#"><i class="ion-ios-arrow-left"></i></a></li>
+                                @if (Model.AllProduct.TotalPages <= 5)
+                                {
+                                    for (int i = 1; i <= Model.AllProduct.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == Model.AllProduct.PageIndex ? "active" : "")"><a class="page-link" asp-route-search="@ViewBag.Search" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                                else
+                                {
+                                    int start = 1;
+                                    int end = 5;
+                                    if (Model.AllProduct.PageIndex > 3 && Model.AllProduct.PageIndex < Model.AllProduct.TotalPages - 2)
+                                    {
+                                        start = Model.AllProduct.PageIndex - 2;
+                                        end = Model.AllProduct.PageIndex + 2;
+                                    }
+                                    else if (Model.AllProduct.PageIndex >= Model.AllProduct.TotalPages - 2)
+                                    {
+                                        start = Model.AllProduct.TotalPages - 4;
+                                        end = Model.AllProduct.TotalPages;
+                                    }
+                                    if (start > 1)
+                                    {
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                    }
+                                    for (int i = start; i <= end; i++)
+                                    {
+                                        <li class="page-item @(i == Model.AllProduct.PageIndex ? "active" : "")"><a class="page-link" asp-route-search="@ViewBag.Search" asp-route-page="@i">@i</a></li>
+                                    }
+                                    if (end < Model.AllProduct.TotalPages)
+                                    {
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                    }
+                                }
+                                <li><a class="Next" href="#"><i class="ion-ios-arrow-right"></i></a></li>
+                            </ul>
+                        </div>
+                        <!-- end pagination area -->
+                        <!-- end pagination area -->
+                    </div>
+                </div>
+                <!-- shop main wrapper end -->
+            </div>
+        </div>
+    </div>
+    <!-- page main wrapper end -->
+</main>
+<!-- main wrapper end -->
+<!-- Quick view modal start -->
+<div class="modal" id="quick_view">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>

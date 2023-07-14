@@ -1,0 +1,65 @@
+﻿@model PaginatedList<Slider>
+@{
+    ViewData["Title"] = "Index";
+    int dataOrder = (Model.PageIndex - 1) * 2;
+}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <h1>Slider</h1> <a class="btn btn-primary" asp-action="create">Create</a>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Order</th>
+                        <th scope="col">Title1</th>
+                        <th scope="col">Title2</th>
+                        <th scope="col">Desc</th>
+                        <th scope="col">BtnText</th>
+                        <th scope="col">BtnUrl</th>
+                        <th scope="col">İmage</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        dataOrder++;
+                        <tr>
+                            <th scope="row">@dataOrder</th>
+                            <td>@item.Order</td>
+                            <td>@item.Title1</td>
+                            <td>@item.Title2</td>
+                            <td>@item.Desc</td>
+                            <td>@item.BtnText</td>
+                            <td>@item.BtnUrl</td>
+                            <td>
+                                <img width="100" height="100" src="/Manage/Uploads/Sliders/@item.Image">
+                            </td>
+                            <td>
+                                <a asp-controller="Slider" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                                <a asp-controller="Slider" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item @(Model.HasPrevius?"":"disabled")">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.PageIndex==i?"active":"")"><a class="page-link" asp-route-page="@i">@i</a></li>
+                    }
+                    <li class="page-item  @(Model.HasNext?"":"disabled")">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
