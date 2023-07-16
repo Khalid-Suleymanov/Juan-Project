@@ -1,0 +1,195 @@
+﻿﻿@using System.Security.Claims;
+@model ProductDetailViewModel
+@{
+    ViewData["Title"] = "Detail";
+}
+<main>
+    <div class="breadcrumb-area bg-img" data-bg="/Manage/Assets/img/Background-color-shop.png">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap text-center">
+                        <nav aria-label="breadcrumb">
+                            <h1 class="breadcrumb-title">shop</h1>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                                <li class="breadcrumb-item"><a asp-action="index" asp-controller="shop">Shop</a></li>
+                                <a class="breadcrumb-item active" aria-current="page" asp-action="detail" asp-controller="home">Product Details</a>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-details-wrapper section-padding">
+        <div class="container custom-container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-details-inner">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="product-large-slider mb-20">
+                                    @foreach (var item in Model.Product.Images)
+                                    {
+                                        <div class="pro-large-img img-zoom">
+                                            <img src="~/Manage/Uploads/Products/@item.ImageName" alt="" />
+                                        </div>
+                                    }
+                                </div>
+                                <div class="pro-nav slick-row-5">
+                                    <div class="pro-nav-thumb"><img src="/Manage/Uploads/Products/5d983f37-c933-4a20-acca-a60f8c814a70shop-6.png" alt="" /></div>
+                                    <div class="pro-nav-thumb"><img src="/Manage/Uploads/Products/7eae8db6-8f33-4530-9137-04cf7fc9ff98SaveProduct-1.png" alt="" /></div>
+                                    <div class="pro-nav-thumb"><img src="/Manage/Uploads/Products/e6e130d9-c614-4215-9efb-58181216718bSaveProduct-3.png" alt="" /></div>
+                                    <div class="pro-nav-thumb"><img src="/Manage/Uploads/Products/ed33a8f5-7a63-4e36-9108-9fa33cd4d2f8Shop-11.png" alt="" /></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="product-details-des">
+                                    <h3 class="pro-det-title">@Model.Product.Name</h3>
+                                    <div class="pro-review">
+                                        <span><a href="#"> Reviews: @Model.Product.ProductReviews.Count</a></span>
+                                    </div>
+                                    <div class="price-box">
+                                        @if (Model.Product.DiscountedPrice > 0)
+                                        {
+                                            <span class="regular-price">$@Model.Product.DiscountedPrice</span>
+                                            <span class="old-price"><del>$@Model.Product.SalePrice</del></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="regular-price">$@Model.Product.SalePrice</span>
+                                        }
+                                    </div>
+                                    <p>
+                                        @Model.Product.Description
+                                    </p>
+                                    <div class="quantity-cart-box d-flex align-items-center mb-20">
+                                        <div class="quantity">
+                                            <div class="pro-qty"><input type="text" value="1"></div>
+                                        </div>
+                                        <a class="btn btn-default basket-add-btn" asp-action="addtobasket" asp-controller="home" asp-route-id="@Model.Product.Id">Add To Cart</a>
+                                    </div>
+                                    <div class="availability mb-20">
+                                        <h5 class="cat-title">Availability:</h5>
+                                        @if (Model.Product.StockStatus)
+                                        {
+                                            <span class="list value">In Stock</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="list value text-danger">Out Stock</span>
+                                        }
+                                    </div>
+                                    <div class="share-icon">
+                                        <h5 class="cat-title">Share:</h5>
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details-reviews section-padding">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="product-review-info">
+                                    <ul class="nav review-tab">
+                                        <li>
+                                            <a class="active" data-toggle="tab" href="#tab_one">description</a>
+                                        </li>
+                                        <li>
+                                            <a data-toggle="tab" href="#tab_three">reviews</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content reviews-tab">
+                                        <div class="tab-pane fade show active" id="tab_one">
+                                            @foreach (var review in Model.Product.ProductReviews)
+                                            {
+                                                <div class="rating-block mb--15">
+                                                    @for (int i = 1; i <= 5; i++)
+                                                    {
+                                                        <span class="ion-android-star-outline @(i<=review.Rate?"star_on":"")"></span>
+                                                    }
+                                                </div>
+                                                <h6 class="author">
+                                                    @review.AppUser.FullName – <span class="font-weight-400">@review.CreatedAt.ToString("dd MMMM, yyyy")</span>
+                                                </h6>
+                                                <div class="tab-one">
+                                                    <p>@review.Text</p>
+                                                </div>
+                                            }
+                                        </div>
+                                        @Html.Partial("_ProductReviewFormPartial", Model.Review)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="Related-product">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="section-title text-center">
+                                        <h2 class="title">Related Product</h2>
+                                        <p class="sub-title">Lorem ipsum dolor sit amet consectetur adipisicing</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="product-carousel-4 mbn-50 slick-row-15 slick-arrow-style">
+                                        @foreach (var item in Model.RelatedProducts)
+                                        {
+                                            <div class="product-item mb-50">
+                                                <div class="product-thumb">
+                                                    <a asp-action="detail" asp-controller="home" asp-route-id="@item.Id">
+                                                        <img src="~/Manage/Uploads/Products/@item.Images.FirstOrDefault(x=>x.ImageStatus==true).ImageName" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h5 class="product-name">
+                                                        <a href="product-details.html">@item.Name</a>
+                                                    </h5>
+                                                    <div class="price-box">
+                                                        @if (Model.Product.DiscountedPrice > 0)
+                                                        {
+                                                            <span class="regular-price">$@Model.Product.DiscountedPrice</span>
+                                                            <span class="old-price"><del>$@Model.Product.SalePrice</del></span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="regular-price">$@Model.Product.SalePrice</span>
+                                                        }
+                                                    </div>
+                                                    <div class="product-action-link">
+                                                        <a href="#" data-toggle="tooltip" title="Wishlist"><i class="ion-android-favorite-outline"></i></a>
+                                                        <a class="basket-add-btn" asp-action="addtobasket" asp-controller="home" asp-route-id="@item.Id" data-toggle="tooltip" title="Add To Cart">
+                                                            <i class="ion-bag"></i>
+                                                        </a>
+                                                        <a data-toggle="modal" data-target="#quick_view" asp-action="getdetail" asp-controller="home" asp-route-id="@item.Id" class="modal-btn">
+                                                            <span data-toggle="tooltip" title="Quick View"><i class="ion-ios-eye-outline"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal" id="quick_view">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+

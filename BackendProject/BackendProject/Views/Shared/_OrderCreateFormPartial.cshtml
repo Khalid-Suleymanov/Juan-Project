@@ -1,0 +1,71 @@
+﻿@model OrderCreateViewModel
+
+<h4 class="checkout-title">Billing Details</h4>
+<div class="billing-form-wrap">
+    <form id="orderForm" asp-action="create" method="post">
+        <div class="row">
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+            {
+                <div class="col-lg-12 mb-10">
+                    <div class="single-input-item">
+                        <label for="FullName">FullName</label>
+                        <input id="FullName" disabled value="@Model.FullName" />
+                        <input type="hidden" name="FullName" value="@Model.FullName">
+                    </div>
+                </div>
+                <div class="col-lg-12 mb-10">
+                    <div class="single-input-item">
+                        <label for="Email">Email</label>
+                        <input id="Email" disabled value="@Model.Email" />
+                        <input type="hidden" name="Email" value="@Model.Email">
+                    </div>
+                </div>
+                <div class="col-lg-12 mb-10">
+                    <div class="single-input-item">
+                        <label for="Phone">Phone</label>
+                        <input id="Phone" disabled value="@Model.Phone" />
+                        <input type="hidden" name="Phone" value="@Model.Phone">
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-12 mb-10">
+                    <div class="single-input-item">
+                        <label asp-for="FullName">FullName</label>
+                        <input asp-for="FullName" />
+                        <span class="text-danger" asp-validation-for="FullName"></span>
+                    </div>
+                </div>
+                <div class="col-lg-12 mb-10">
+                    <div class="single-input-item">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                </div>
+                <div class="col-lg-12 mb-10">
+                    <div class="single-input-item">
+                        <label asp-for="Phone">Phone</label>
+                        <input asp-for="Phone" />
+                        <span class="text-danger" asp-validation-for="Phone"></span>
+                    </div>
+                </div>
+            }
+            <div class="col-lg-12 mb-10">
+                <div class="single-input-item">
+                    <label asp-for="Address">Address</label>
+                    <input asp-for="Address" />
+                    <span class="text-danger" asp-validation-for="Address"></span>
+                </div>
+            </div>
+            <div class="col-lg-12 mb-10">
+                <div class="single-input-item">
+                    <label asp-for="Note">Note</label>
+                    <textarea asp-for="Note" rows="3"></textarea>
+                    <span class="text-danger" asp-validation-for="Note"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
